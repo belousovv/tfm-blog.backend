@@ -31,7 +31,7 @@ import {
   imageUploadController,
 } from './controllers/uploads-controllers.js'
 
-const PORT = 4444
+const PORT = process.env.PORT || 4444
 const app = express()
 
 // Express middlewares
