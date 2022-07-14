@@ -1,6 +1,7 @@
 import cors from 'cors'
 import express from 'express'
-import multer from 'multer'
+import path from 'path'
+import morgan from 'morgan'
 import {
   loginValidator,
   registerValidator,
@@ -13,33 +14,51 @@ import {
 } from './controllers/auth-controllers.js'
 import { authMiddleware } from './middlewares/auth-middleware.js'
 import {
+  addLikeController,
+  addViewsController,
   createPostController,
   deletePostController,
   getOnePostController,
+  getPostsByFilterController,
   getPostsController,
+  removeLikeController,
   updatePostController,
 } from './controllers/posts-controllers.js'
+import { fileURLToPath } from 'url'
+import { imagesMiddleware } from './middlewares/images-middleware.js'
+import {
+  avatarUploadController,
+  imageUploadController,
+} from './controllers/uploads-controllers.js'
 
 const PORT = 4444
 const app = express()
 
-// Multer storage config
-const storageConfig = multer.diskStorage({
-  destination: (_, __, cb) => {
-    cb('image')
-  },
-  filename: (_, file, cb) => {
-    cb(file.originalname)
-  },
-})
-
 // Express middlewares
 app.use(cors())
 app.use(express.json())
-app.use('/images', express.static('images'))
-app.use(multer({ storage: storageConfig }).single('image'))
+app.use(morgan('tiny'))
+app.use(
+  '/uploads',
+  express.static(
+    path.join(path.dirname(fileURLToPath(import.meta.url)), 'uploads')
+  )
+)
 
 // Routes
+app.post(
+  '/uploads',
+  authMiddleware,
+  imagesMiddleware.single('image'),
+  imageUploadController
+)
+app.post(
+  '/avatar',
+  authMiddleware,
+  imagesMiddleware.single('image'),
+  avatarUploadController
+)
+
 app.post(
   '/auth/register',
   registerValidator,
@@ -50,10 +69,14 @@ app.post('/auth/login', loginValidator, validationMiddleware, loginController)
 app.get('/auth/me', authMiddleware, getMeController)
 
 app.get('/posts', getPostsController)
+app.get('/tags/:tag', getPostsByFilterController)
 app.get('/posts/:id', getOnePostController)
+app.post('/posts/views/:id', addViewsController)
 app.post('/posts', authMiddleware, createPostController)
 app.patch('/posts/:id', authMiddleware, updatePostController)
 app.delete('/posts/:id', authMiddleware, deletePostController)
+app.patch('/posts/likes/:id', authMiddleware, addLikeController)
+app.delete('/posts/likes/:id', authMiddleware, removeLikeController)
 
 // Server
 app.listen(PORT, (error) => {

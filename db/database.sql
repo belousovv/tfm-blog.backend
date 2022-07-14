@@ -1,4 +1,4 @@
-CREATE DATABASE tfm_tips;
+CREATE DATABASE tfm_blog;
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
@@ -19,7 +19,7 @@ CREATE TABLE posts (
   text TEXT NOT NULL,
   tags TEXT[] DEFAULT '{}',
   views INTEGER DEFAULT 0,
-  likes INTEGER DEFAULT 0,
+  likes TEXT[] DEFAULT '{}',
   image_url TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (post_id),

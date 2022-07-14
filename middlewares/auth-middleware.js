@@ -4,7 +4,7 @@ export const authMiddleware = (req, res, next) => {
   const token = req.headers.authorization
   if (!token) {
     return res.status(403).json({
-      message: 'ошибка доступа',
+      message: 'Ошибка доступа',
     })
   }
 
@@ -14,7 +14,7 @@ export const authMiddleware = (req, res, next) => {
     next()
   } catch (error) {
     return res.status(403).json({
-      message: 'ошибка доступа',
+      message: 'Ошибка доступа',
     })
   }
 }

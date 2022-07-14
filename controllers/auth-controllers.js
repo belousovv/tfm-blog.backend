@@ -15,7 +15,7 @@ export const registerController = async (req, res) => {
     )
     if (user_id.rows.length > 0) {
       return res.status(400).json({
-        message: 'указанная почта уже зарегистрирована',
+        message: 'Указанная почта уже зарегистрирована',
       })
     }
 
@@ -46,7 +46,7 @@ export const registerController = async (req, res) => {
     })
   } catch (error) {
     return res.status(400).json({
-      message: 'ошибка при регистрации',
+      message: 'Ошибка при регистрации',
     })
   }
 }
@@ -63,7 +63,7 @@ export const loginController = async (req, res) => {
     ])
     if (user.rows.length === 0) {
       return res.status(400).json({
-        message: 'почта или пароль указаны не верно',
+        message: 'Почта или пароль указаны не верно',
       })
     }
 
@@ -74,7 +74,7 @@ export const loginController = async (req, res) => {
     )
     if (!isComparedPassword) {
       return res.status(400).json({
-        message: 'почта или пароль указаны не верно',
+        message: 'Почта или пароль указаны не верно',
       })
     }
 
@@ -95,7 +95,7 @@ export const loginController = async (req, res) => {
     })
   } catch (error) {
     return json.status(500).json({
-      message: 'ошибка авторизации',
+      message: 'Ошибка авторизации',
     })
   }
 }
@@ -106,7 +106,7 @@ export const getMeController = async (req, res) => {
 
     if (!userId) {
       return res.status(400).json({
-        message: 'ошибка авторизации',
+        message: 'Ошибка авторизации',
       })
     }
 
@@ -117,7 +117,7 @@ export const getMeController = async (req, res) => {
     res.json(userData)
   } catch (error) {
     return res.status(400).json({
-      message: 'ошибка авторизации',
+      message: 'Ошибка авторизации',
     })
   }
 }
