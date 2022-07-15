@@ -8,3 +8,5 @@
 <li>Express</li>
 <li>PostgreSql</li>
 </ul>
+
+<em>Any images (for post, avatar) are saved in the file system and periodically deleted by Heroku. In the future, they will be stored in postgresql.</em>
